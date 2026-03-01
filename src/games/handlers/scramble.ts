@@ -192,11 +192,9 @@ function renderScrambleCanvas(
     }
   }
 
-  // ── Phase-specific content ──
   const contentY = roundBarY + 48;
 
   if (phase === 'playing') {
-    // Scrambled word box
     drawRoundRect(ctx, 30, contentY, width - 60, 70, 12, 'rgba(124,58,237,0.15)', c.accent);
     drawText(ctx, scrambled, width / 2, contentY + 35, {
       font: 'bold 32px sans-serif',
