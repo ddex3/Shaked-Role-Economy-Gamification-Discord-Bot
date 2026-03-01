@@ -203,7 +203,6 @@ function renderScrambleCanvas(
       shadow: true,
     });
 
-    // Hint
     drawText(ctx, `Hint: starts with "${hint}"`, width / 2, contentY + 95, {
       font: '16px sans-serif',
       color: c.warning,
