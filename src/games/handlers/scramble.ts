@@ -209,7 +209,6 @@ function renderScrambleCanvas(
       align: 'center',
     });
 
-    // Timer
     const timerY = contentY + 118;
     const timerWidth = width - 60;
     const progress = Math.max(0, timeLeft / TIME_LIMIT);
@@ -227,11 +226,9 @@ function renderScrambleCanvas(
       align: 'center',
     });
 
-    // Status
     drawStatusBar(ctx, 30, height - 100, width - 60, 'Unscramble the word! Pick the correct answer.', c.primary);
 
   } else if (phase === 'between_rounds') {
-    // Correct answer - show cash out / continue
     drawText(ctx, 'Correct!', width / 2, contentY + 25, {
       font: 'bold 28px sans-serif',
       color: c.success,
@@ -239,7 +236,6 @@ function renderScrambleCanvas(
       shadow: true,
     });
 
-    // Cash out box
     const boxY = contentY + 50;
     const currentPayout = Math.floor(bet * multiplier);
     drawRoundRect(ctx, 50, boxY, width - 100, 70, 12, 'rgba(87,242,135,0.1)', c.success);
@@ -255,7 +251,6 @@ function renderScrambleCanvas(
       shadow: true,
     });
 
-    // Next round info
     if (nextMultiplier) {
       const nextY = boxY + 85;
       const diffHarder = getDifficultyForRound(round + 1) > getDifficultyForRound(round);
@@ -275,7 +270,6 @@ function renderScrambleCanvas(
     drawStatusBar(ctx, 30, height - 100, width - 60, 'Cash out or risk it for more!', c.warning);
 
   } else if (phase === 'won') {
-    // Won all rounds
     drawText(ctx, 'ALL ROUNDS COMPLETE!', width / 2, contentY + 25, {
       font: 'bold 24px sans-serif',
       color: c.gold,
@@ -300,7 +294,6 @@ function renderScrambleCanvas(
     drawStatusBar(ctx, 30, height - 100, width - 60, `MAX WIN! ${MAX_ROUNDS} rounds cleared! +$${(payout || 0).toLocaleString()}`, c.gold);
 
   } else if (phase === 'cashout') {
-    // Cashed out
     drawText(ctx, 'CASHED OUT!', width / 2, contentY + 25, {
       font: 'bold 26px sans-serif',
       color: c.success,
@@ -325,7 +318,6 @@ function renderScrambleCanvas(
     drawStatusBar(ctx, 30, height - 100, width - 60, `Smart move! Cashed out +$${(payout || 0).toLocaleString()}`, c.success);
 
   } else if (phase === 'lost') {
-    // Wrong answer
     drawText(ctx, 'WRONG!', width / 2, contentY + 25, {
       font: 'bold 28px sans-serif',
       color: c.danger,
@@ -350,7 +342,6 @@ function renderScrambleCanvas(
     drawStatusBar(ctx, 30, height - 100, width - 60, `Lost at Round ${round}! -$${bet.toLocaleString()}`, c.danger);
 
   } else if (phase === 'timeout') {
-    // Time's up
     drawText(ctx, "TIME'S UP!", width / 2, contentY + 25, {
       font: 'bold 28px sans-serif',
       color: c.danger,
@@ -380,8 +371,6 @@ function renderScrambleCanvas(
 
   return canvas.toBuffer('image/png');
 }
-
-// ── Game handler ────────────────────────────────────────────────────
 
 const scrambleHandler: GameHandler = {
   name: 'scramble',
@@ -429,7 +418,6 @@ const scrambleHandler: GameHandler = {
 
     await interaction.editReply({ files: [attachment], components: [row] });
 
-    // Auto-timeout: update image automatically when time runs out
     scheduleAutoTimeout(gameId, round, userId, playerName, bet, (opts) => interaction.editReply(opts));
   },
 
@@ -449,7 +437,6 @@ const scrambleHandler: GameHandler = {
 
     const state = gameState.state;
 
-    // ── CASH OUT ──
     if (action === 'cashout') {
       const { round } = state;
       const multiplier = ROUND_MULTIPLIERS[round - 1];
@@ -475,7 +462,6 @@ const scrambleHandler: GameHandler = {
       return;
     }
 
-    // ── NEXT ROUND ──
     if (action === 'next') {
       const nextRound = state.round + 1;
       const difficulty = getDifficultyForRound(nextRound);
@@ -514,12 +500,10 @@ const scrambleHandler: GameHandler = {
 
       await interaction.update({ files: [attachment], components: [row] });
 
-      // Auto-timeout for the new round
       scheduleAutoTimeout(gameState.gameId, nextRound, userId, playerName, gameState.bet, (opts) => interaction.editReply(opts));
       return;
     }
 
-    // ── ANSWER ──
     const parts = action.split('_');
     if (parts[0] !== 'answer') {
       await interaction.reply({ content: 'Invalid action.', ephemeral: true });
@@ -534,7 +518,6 @@ const scrambleHandler: GameHandler = {
 
     antiAbuse.recordAction(userId, 'game_scramble');
 
-    // Check timeout
     if (elapsed > TIME_LIMIT) {
       const xpEarned = calculateXpReward(Config.games.xpBase, false);
       db.addXp(userId, xpEarned);
@@ -561,7 +544,6 @@ const scrambleHandler: GameHandler = {
 
     if (isCorrect) {
       if (round >= MAX_ROUNDS) {
-        // Won all rounds!
         const payout = Math.floor(gameState.bet * multiplier);
         const xpEarned = calculateXpReward(Config.games.xpBase, true);
 
@@ -582,7 +564,6 @@ const scrambleHandler: GameHandler = {
 
         await interaction.update({ files: [attachment], components: [] });
       } else {
-        // Between rounds - show cash out / next round options
         const nextMultiplier = ROUND_MULTIPLIERS[round];
 
         gameEngine.updateGame(gameState.gameId, { phase: 'between_rounds' });
@@ -609,7 +590,6 @@ const scrambleHandler: GameHandler = {
         await interaction.update({ files: [attachment], components: [row] });
       }
     } else {
-      // Wrong answer - lose everything
       const xpEarned = calculateXpReward(Config.games.xpBase, false);
       db.addXp(userId, xpEarned);
       db.updateGameStats(userId, 'scramble', false, false, gameState.bet, 0);
