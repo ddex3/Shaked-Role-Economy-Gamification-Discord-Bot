@@ -160,7 +160,6 @@ function renderScrambleCanvas(
 
   const headerY = drawGameHeader(ctx, width, 'Word Scramble', playerName, bet);
 
-  // ── Round progress bar ──
   const roundBarY = headerY + 12;
   drawRoundRect(ctx, 30, roundBarY, width - 60, 32, 8, 'rgba(0,0,0,0.3)', c.cardBorder);
 
@@ -175,7 +174,6 @@ function renderScrambleCanvas(
     align: 'right',
   });
 
-  // Round dots
   const dotsStartX = width / 2 - ((MAX_ROUNDS - 1) * 20) / 2;
   for (let i = 0; i < MAX_ROUNDS; i++) {
     const dotX = dotsStartX + i * 20;
