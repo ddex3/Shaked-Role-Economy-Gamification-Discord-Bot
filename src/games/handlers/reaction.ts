@@ -206,7 +206,6 @@ const reactionHandler: GameHandler = {
 
     await interaction.editReply({ files: [attachment], components: [row] });
 
-    // Update the message to show the green "GO" phase after the delay
     setTimeout(async () => {
       const game = gameEngine.getGame(gameId);
       if (!game || game.finished) return;
@@ -226,10 +225,8 @@ const reactionHandler: GameHandler = {
       try {
         await interaction.editReply({ files: [goAttachment], components: [goRow] });
       } catch {
-        // Game message may have been deleted
       }
 
-      // Auto-timeout: end the game if no click within 10 seconds of GO
       setTimeout(async () => {
         const g = gameEngine.getGame(gameId);
         if (!g || g.finished) return;

@@ -47,7 +47,6 @@ function buildTableView(table: string, page: number): { embeds: EmbedBuilder[]; 
   if (rows.length === 0) {
     embed.setDescription('*Table is empty*');
   } else {
-    // Show each row as a field with column: value pairs
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
       const rowNum = offset + i + 1;
@@ -63,7 +62,6 @@ function buildTableView(table: string, page: number): { embeds: EmbedBuilder[]; 
     }
   }
 
-  // Navigation buttons
   const navRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`ap_data_dbpage_${table}_0_f`)
@@ -92,7 +90,6 @@ function buildTableView(table: string, page: number): { embeds: EmbedBuilder[]; 
       .setDisabled(safePage >= totalPages - 1),
   );
 
-  // Table select menu for quick switching
   const tableSelect = new StringSelectMenuBuilder()
     .setCustomId('ap_select_data_table')
     .setPlaceholder('Switch table...')
@@ -105,7 +102,6 @@ function buildTableView(table: string, page: number): { embeds: EmbedBuilder[]; 
 
   const selectRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(tableSelect);
 
-  // Back button
   const backRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder().setCustomId('ap_data_dbback').setLabel('Back to Data Viewer').setStyle(ButtonStyle.Secondary),
   );
@@ -142,9 +138,7 @@ const dataSection: SectionHandler = {
   },
 
   async handleButton(interaction: ButtonInteraction, action: string) {
-    // Handle DB Viewer pagination: dbpage_tableName_pageNum_role
     if (action.startsWith('dbpage_')) {
-      // Strip the role suffix (_f, _p, _n, _l) used to ensure unique custom IDs
       const cleaned = action.replace(/_(f|p|n|l)$/, '');
       const parts = cleaned.replace('dbpage_', '');
       const lastUnderscore = parts.lastIndexOf('_');
@@ -159,7 +153,6 @@ const dataSection: SectionHandler = {
 
     switch (action) {
       case 'dbviewer': {
-        // Open DB viewer starting with first table that has rows, or 'users'
         const startTable = TABLES.find(t => db.getTableCount(t) > 0) || 'users';
         const view = buildTableView(startTable, 0);
         await interaction.reply({ embeds: view.embeds, components: view.components, ephemeral: true });
@@ -167,7 +160,6 @@ const dataSection: SectionHandler = {
       }
 
       case 'dbback': {
-        // Show table overview with clickable buttons
         const lines = TABLES.map(table => {
           const count = db.getTableCount(table);
           const cols = db.getTableColumns(table).length;

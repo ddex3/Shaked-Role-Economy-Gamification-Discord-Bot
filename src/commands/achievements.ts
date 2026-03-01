@@ -155,7 +155,6 @@ function buildAchievementsEmbed(
   return embed;
 }
 
-// customId format: ach_cat_<userId>
 function buildCategoryMenu(userId: string, currentCategory: string): ActionRowBuilder<StringSelectMenuBuilder> {
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
     new StringSelectMenuBuilder()
@@ -172,7 +171,6 @@ function buildCategoryMenu(userId: string, currentCategory: string): ActionRowBu
   );
 }
 
-// customId format: ach_<action>_<targetPage>_<category>_<userId>
 function buildPageButtons(userId: string, category: string, page: number, totalPages: number): ActionRowBuilder<ButtonBuilder> {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()

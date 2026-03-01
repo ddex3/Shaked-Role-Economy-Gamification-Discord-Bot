@@ -112,7 +112,6 @@ const envSection: SectionHandler = {
         return;
       }
 
-      // Password correct - show env vars
       const vars = loadEnvVars();
 
       if (vars.length === 0) {

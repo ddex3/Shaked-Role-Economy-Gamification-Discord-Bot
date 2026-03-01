@@ -111,7 +111,6 @@ function renderOpenCanvas(
   const height = result.jackpot ? 400 : 360;
   const { canvas, ctx } = createBaseCanvas(width, height);
 
-  // Header
   drawGradientRect(ctx, 0, 0, width, 60, 0, [tier.glowColor, 'transparent']);
   drawText(ctx, `${tier.emoji} Mystery Box Opened!`, width / 2, 28, {
     font: 'bold 22px sans-serif',
@@ -125,7 +124,6 @@ function renderOpenCanvas(
     align: 'center',
   });
 
-  // Reward rolls
   const rollStartY = 80;
   const rollHeight = 50;
   const rollGap = 8;
@@ -158,13 +156,11 @@ function renderOpenCanvas(
 
   let bottomY = rollStartY + 3 * (rollHeight + rollGap) + 5;
 
-  // Jackpot banner
   if (result.jackpot) {
     drawStatusBar(ctx, 30, bottomY, width - 60, `JACKPOT! ${tier.jackpotMultiplier}x Coins!`, c.gold);
     bottomY += 40;
   }
 
-  // Totals section
   drawCard(ctx, 30, bottomY, width - 60, 65, { shadow: true });
 
   drawText(ctx, 'Total Earned', width / 2, bottomY + 18, {
@@ -218,7 +214,6 @@ const command: Command = {
     const userId = interaction.user.id;
     const boxParam = interaction.options.getString('box');
 
-    // Get mystery boxes from inventory
     const inventory = db.getInventory(userId);
     const mysteryBoxes = inventory.filter(item => item.itemId.startsWith('mystery_box_'));
 
@@ -231,7 +226,6 @@ const command: Command = {
       return;
     }
 
-    // Determine which box to open
     let selectedBoxId: string;
 
     if (boxParam) {
@@ -268,7 +262,6 @@ const command: Command = {
       return;
     }
 
-    // Consume the box
     const removed = db.removeInventoryItem(userId, selectedBoxId, 1);
     if (!removed) {
       await interaction.editReply({
@@ -277,17 +270,14 @@ const command: Command = {
       return;
     }
 
-    // Generate rewards
     const result = generateRewards(tier);
 
-    // Apply rewards
     if (result.totalCoins > 0) db.addCoins(userId, result.totalCoins);
     if (result.totalXp > 0) db.addXp(userId, result.totalXp);
 
     db.updateQuestProgress(userId, 'economy', 1);
     db.checkAchievements(userId);
 
-    // Log
     if (interaction.guildId) {
       logService.log(interaction.guildId, 'economy', {
         action: 'Mystery Box Opened',
@@ -302,7 +292,6 @@ const command: Command = {
       });
     }
 
-    // Render and send
     const imageBuffer = renderOpenCanvas(interaction.user.displayName, tier, result);
     const attachment = new AttachmentBuilder(imageBuffer, { name: 'mysterybox-open.png' });
     await interaction.editReply({ files: [attachment] });

@@ -170,7 +170,6 @@ class DatabaseManager {
       CREATE INDEX IF NOT EXISTS idx_game_stats_user ON game_stats(userId);
     `);
 
-    // Migrations
     try {
       this.db.exec('ALTER TABLE game_stats ADD COLUMN maxSingleBet INTEGER DEFAULT 0');
     } catch {}

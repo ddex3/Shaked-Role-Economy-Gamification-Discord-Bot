@@ -151,7 +151,6 @@ export async function handleShopSelectMenu(interaction: StringSelectMenuInteract
   const customId = interaction.customId;
   const userId = interaction.user.id;
 
-  // shop_category_<userId>
   if (customId.startsWith('shop_category_')) {
     const ownerId = customId.replace('shop_category_', '');
     if (userId !== ownerId) {
@@ -174,7 +173,6 @@ export async function handleShopSelectMenu(interaction: StringSelectMenuInteract
     return;
   }
 
-  // shop_item_<userId>_<category>
   if (customId.startsWith('shop_item_')) {
     const parts = customId.replace('shop_item_', '').split('_');
     const ownerId = parts[0];
@@ -218,7 +216,6 @@ export async function handleShopButton(interaction: ButtonInteraction): Promise<
   const customId = interaction.customId;
   const userId = interaction.user.id;
 
-  // shop_confirm_<userId>_<itemId>_<category>
   if (customId.startsWith('shop_confirm_')) {
     const rest = customId.replace('shop_confirm_', '');
     const firstUnderscore = rest.indexOf('_');
@@ -311,7 +308,6 @@ export async function handleShopButton(interaction: ButtonInteraction): Promise<
     return;
   }
 
-  // shop_cancel_<userId>_<category>
   if (customId.startsWith('shop_cancel_')) {
     const parts = customId.replace('shop_cancel_', '').split('_');
     const ownerId = parts[0];

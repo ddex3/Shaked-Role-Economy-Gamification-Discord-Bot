@@ -264,7 +264,6 @@ const xpSection: SectionHandler = {
       }
 
       default: {
-        // Dynamic confirm buttons: exec_alladdxp_<amount>, exec_allremovexp_<amount>
         if (action.startsWith('exec_alladdxp_') || action.startsWith('exec_allremovexp_')) {
           const isAdd = action.startsWith('exec_alladdxp_');
           const amount = parseInt(action.split('_').pop()!, 10);
@@ -313,7 +312,6 @@ const xpSection: SectionHandler = {
           }
         }
 
-        // Paginated all users view: allusers_<page>
         if (action.startsWith('allusers_')) {
           const page = parseInt(action.replace('allusers_', ''), 10) || 0;
           const perPage = 15;
@@ -353,7 +351,6 @@ const xpSection: SectionHandler = {
           }
         }
 
-        // Set Level All: step 2 confirm → opens verification modal
         if (action.startsWith('allsetlevel_verify_')) {
           const level = action.replace('allsetlevel_verify_', '');
           const modal = new ModalBuilder()
@@ -372,7 +369,6 @@ const xpSection: SectionHandler = {
   },
 
   async handleModal(interaction: ModalSubmitInteraction, action: string) {
-    // Step 1 modals for ALL actions → show confirmation
     if (action === 'alladdxp' || action === 'allremovexp' || action === 'allsetlevel') {
       const amountStr = interaction.fields.getTextInputValue('amount').trim();
       const amount = parseInt(amountStr, 10);
@@ -416,7 +412,6 @@ const xpSection: SectionHandler = {
       return;
     }
 
-    // Verification modals (step 3) for Set Level All and Reset XP All
     if (action.startsWith('verify_allsetlevel_')) {
       const level = parseInt(action.replace('verify_allsetlevel_', ''), 10);
       const input = interaction.fields.getTextInputValue('verify').trim();

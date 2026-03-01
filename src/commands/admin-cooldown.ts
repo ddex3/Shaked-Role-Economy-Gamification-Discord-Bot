@@ -387,13 +387,11 @@ async function handleView(interaction: ChatInputCommandInteraction): Promise<voi
 
   const lines: string[] = [];
 
-  // Show global override if exists
   const globalOverride = overrides.find(o => o.gameType === 'all');
   if (globalOverride) {
     lines.push(`**Global Override:** \`${formatMs(globalOverride.cooldownMs)}\`\n`);
   }
 
-  // Show per-game status
   for (const handler of handlers) {
     const override = overrides.find(o => o.gameType === handler.name);
     const effectiveGlobal = globalOverride && !override ? globalOverride.cooldownMs : null;

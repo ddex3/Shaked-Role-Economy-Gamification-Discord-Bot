@@ -95,11 +95,9 @@ async function handleButton(interaction: ButtonInteraction): Promise<void> {
     return;
   }
 
-  // ach_<action>_<targetPage>_<category>_<userId>
   if (customId.startsWith('ach_') && !customId.startsWith('ach_cat_') && !customId.startsWith('ach_info')) {
     try {
       const parts = customId.split('_');
-      // ach_<action>_<page>_<cat>_<userId>
       const targetPage = parseInt(parts[2]);
       const category = parts[3];
       const ownerId = parts[4];
@@ -188,7 +186,6 @@ async function handleSelectMenu(interaction: StringSelectMenuInteraction): Promi
     return;
   }
 
-  // ach_cat_<userId>
   if (customId.startsWith('ach_cat_')) {
     try {
       const ownerId = customId.replace('ach_cat_', '');

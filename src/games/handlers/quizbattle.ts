@@ -137,17 +137,14 @@ function renderTimeUpCanvas(
 
   const headerY = drawGameHeader(ctx, width, 'Quiz Battle', playerName, bet);
 
-  // Main card frame
   drawCard(ctx, 20, headerY + 12, width - 40, 200, { fill: 'rgba(0,0,0,0.3)', border: c.danger, shadow: true });
 
-  // Time-up icon
   drawText(ctx, '⏰', width / 2, headerY + 55, {
     font: 'bold 44px sans-serif',
     color: c.danger,
     align: 'center',
   });
 
-  // "Time's Up!" title
   drawText(ctx, "TIME'S UP!", width / 2, headerY + 95, {
     font: 'bold 30px sans-serif',
     color: c.danger,
@@ -155,7 +152,6 @@ function renderTimeUpCanvas(
     shadow: true,
   });
 
-  // Timer bar empty
   drawRoundRect(ctx, 40, headerY + 118, width - 80, 6, 3, 'rgba(255,255,255,0.1)');
   drawText(ctx, '0s', width / 2, headerY + 134, {
     font: '11px sans-serif',
@@ -163,7 +159,6 @@ function renderTimeUpCanvas(
     align: 'center',
   });
 
-  // Score inside the card
   const scoreColor = score === 3 ? c.success : score >= 1 ? c.warning : c.danger;
   drawText(ctx, `Score: ${score} / 3`, width / 2, headerY + 162, {
     font: 'bold 24px sans-serif',
@@ -171,7 +166,6 @@ function renderTimeUpCanvas(
     align: 'center',
   });
 
-  // Multiplier
   const multiplierText = score === 0 ? '0x' : score === 1 ? '1x' : score === 2 ? '2x' : '4x';
   drawText(ctx, `Multiplier: ${multiplierText}`, width / 2, headerY + 190, {
     font: 'bold 14px sans-serif',
@@ -179,7 +173,6 @@ function renderTimeUpCanvas(
     align: 'center',
   });
 
-  // Status bar below card
   const statusY = headerY + 225;
   if (payout > bet) {
     drawStatusBar(ctx, 30, statusY, width - 60, `YOU WIN! +$${payout.toLocaleString()}`, c.success);
@@ -282,7 +275,6 @@ function endGameOnTimeout(
   const userId = game.players[0];
   const bet = game.bet;
 
-  // Mark all remaining questions as incorrect
   while (game.state.answered.length < 3) {
     game.state.answered.push(false);
   }

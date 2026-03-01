@@ -91,11 +91,9 @@ export function drawBadgeIcon(ctx: CanvasRenderingContext2D, cx: number, cy: num
 
   ctx.save();
 
-  // Glow
   ctx.shadowColor = theme.glow;
   ctx.shadowBlur = 14;
 
-  // Metallic border hex
   drawHexPath(ctx, cx, cy, r + 3);
   const borderGrad = ctx.createLinearGradient(cx, cy - r, cx, cy + r);
   borderGrad.addColorStop(0, theme.border[0]);
@@ -107,7 +105,6 @@ export function drawBadgeIcon(ctx: CanvasRenderingContext2D, cx: number, cy: num
   ctx.shadowColor = 'transparent';
   ctx.shadowBlur = 0;
 
-  // Rich gradient fill
   drawHexPath(ctx, cx, cy, r - 1);
   const fillGrad = ctx.createRadialGradient(cx, cy - r * 0.3, 0, cx, cy, r);
   fillGrad.addColorStop(0, theme.fill[0]);
@@ -116,7 +113,6 @@ export function drawBadgeIcon(ctx: CanvasRenderingContext2D, cx: number, cy: num
   ctx.fillStyle = fillGrad;
   ctx.fill();
 
-  // Top shine (clipped to hex)
   ctx.save();
   drawHexPath(ctx, cx, cy, r - 1);
   ctx.clip();
@@ -127,7 +123,6 @@ export function drawBadgeIcon(ctx: CanvasRenderingContext2D, cx: number, cy: num
   ctx.fill();
   ctx.restore();
 
-  // Emoji icon
   drawText(ctx, badge.emoji, cx, cy, {
     font: `${Math.round(r * 0.85)}px sans-serif`,
     align: 'center',

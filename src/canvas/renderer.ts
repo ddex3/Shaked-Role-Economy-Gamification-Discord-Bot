@@ -480,7 +480,6 @@ export function drawLuckyWheel(ctx: CanvasRenderingContext2D, x: number, y: numb
   ctx.save();
   ctx.translate(x, y);
 
-  // Outer ring
   ctx.beginPath();
   ctx.arc(0, 0, radius + 5, 0, Math.PI * 2);
   ctx.fillStyle = '#1F2937';
@@ -489,11 +488,9 @@ export function drawLuckyWheel(ctx: CanvasRenderingContext2D, x: number, y: numb
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Rotate wheel so winning segment lands at the arrow (top)
   let rotationOffset = 0;
   if (resultIndex !== undefined) {
     rotationOffset = -(resultIndex * sliceAngle + sliceAngle / 2);
-    // Add small random offset within segment for realism
     rotationOffset += (Math.random() - 0.5) * sliceAngle * 0.6;
   }
 
@@ -532,13 +529,11 @@ export function drawLuckyWheel(ctx: CanvasRenderingContext2D, x: number, y: numb
     ctx.restore();
   }
 
-  // Center circle
   ctx.beginPath();
   ctx.arc(0, 0, radius * 0.12, 0, Math.PI * 2);
   ctx.fillStyle = '#D4AF37';
   ctx.fill();
 
-  // Arrow - sits on the border, pointing inward
   ctx.beginPath();
   ctx.moveTo(0, -radius + 15);
   ctx.lineTo(-10, -radius - 3);

@@ -21,8 +21,6 @@ import { generateId, shuffle, randomChoice, calculateXpReward } from '../../util
 import { Config } from '../../config';
 import { GameHandler, GameState } from '../../types';
 
-// ── Word pools by difficulty ────────────────────────────────────────
-
 const EASY_WORDS = [
   'QUEST', 'SWORD', 'MAGIC', 'COINS', 'TOWER', 'FORGE', 'ARMOR', 'CROWN',
   'GUILD', 'ROGUE', 'BRAVE', 'ROYAL', 'FLAME', 'STONE', 'POWER', 'STORM',
@@ -46,13 +44,9 @@ const HARD_WORDS = [
 
 const WORDS_BY_DIFFICULTY = [EASY_WORDS, MEDIUM_WORDS, HARD_WORDS];
 
-// ── Constants ───────────────────────────────────────────────────────
-
 const MAX_ROUNDS = 5;
 const TIME_LIMIT = 15_000;
 const ROUND_MULTIPLIERS = [1.5, 2.0, 3.0, 5.0, 8.0];
-
-// ── Helpers ─────────────────────────────────────────────────────────
 
 function getDifficultyForRound(round: number): number {
   if (round <= 2) return 0;
@@ -108,8 +102,6 @@ function getDecoys(correctWord: string, difficulty: number, usedWords: string[],
 
 type Phase = 'playing' | 'between_rounds' | 'won' | 'cashout' | 'lost' | 'timeout';
 
-// ── Auto-timeout ────────────────────────────────────────────────────
-
 function scheduleAutoTimeout(
   gameId: string,
   expectedRound: number,
@@ -146,8 +138,6 @@ function scheduleAutoTimeout(
     } catch {}
   }, TIME_LIMIT + 500);
 }
-
-// ── Canvas rendering ────────────────────────────────────────────────
 
 function renderScrambleCanvas(
   playerName: string,

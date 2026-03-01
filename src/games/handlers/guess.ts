@@ -41,23 +41,19 @@ function renderGuessCanvas(
 
   const headerY = drawGameHeader(ctx, width, 'Number Guess', playerName, bet);
 
-  // --- Range Bar ---
   const barY = headerY + 28;
   const barX = 30;
   const barW = width - 60;
   const barH = 22;
 
-  // Track
   drawRoundRect(ctx, barX, barY, barW, barH, barH / 2, 'rgba(255,255,255,0.06)');
 
-  // Active range
   const rangeStart = ((low - 1) / 100) * barW;
   const rangeEnd = (high / 100) * barW;
   const activeW = Math.max(rangeEnd - rangeStart, barH);
 
   drawRoundRect(ctx, barX + rangeStart, barY, activeW, barH, barH / 2, c.primary);
 
-  // Subtle shine
   ctx.save();
   roundRect(ctx, barX + rangeStart, barY, activeW, barH / 2, barH / 2);
   ctx.clip();
@@ -65,7 +61,6 @@ function renderGuessCanvas(
   ctx.fillRect(barX + rangeStart, barY, activeW, barH / 2);
   ctx.restore();
 
-  // Range labels on bar
   if (high - low >= 3) {
     drawText(ctx, String(low), barX + rangeStart + 8, barY + barH / 2, {
       font: 'bold 11px sans-serif',
@@ -84,7 +79,6 @@ function renderGuessCanvas(
     });
   }
 
-  // Scale labels
   drawText(ctx, '1', barX, barY + barH + 14, {
     font: '10px sans-serif',
     color: c.textDim,
@@ -100,7 +94,6 @@ function renderGuessCanvas(
     align: 'right',
   });
 
-  // --- Attempts ---
   const attY = barY + barH + 36;
 
   drawText(ctx, `${attemptsLeft} of ${maxAttempts} remaining`, width / 2, attY, {
@@ -148,7 +141,6 @@ function renderGuessCanvas(
     }
   }
 
-  // --- Hint ---
   const hintY = dotsRowY + 30;
   drawText(ctx, hint, width / 2, hintY, {
     font: 'bold 17px sans-serif',
@@ -157,7 +149,6 @@ function renderGuessCanvas(
     shadow: true,
   });
 
-  // --- Status ---
   const statusY = hintY + 32;
 
   if (phase === 'playing') {
@@ -342,7 +333,6 @@ const guessHandler: GameHandler = {
       return;
     }
 
-    // Range narrowing consumes an attempt
     attemptsLeft--;
 
     let newLow = pickLow;

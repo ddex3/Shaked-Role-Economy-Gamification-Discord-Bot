@@ -194,7 +194,6 @@ function buildAnswerButtons(gameId: string, options: number[]): ActionRowBuilder
   );
 }
 
-// Auto-timeout timers: automatically update the message when time runs out
 const roundTimers = new Map<string, NodeJS.Timeout>();
 
 function clearRoundTimer(gameId: string): void {
@@ -252,7 +251,6 @@ function startRoundTimer(
     try {
       await message.edit({ files: [attachment], components: [row] });
     } catch {
-      // Message may have been deleted or is no longer editable
     }
   }, 10_000);
   roundTimers.set(gameId, timer);
